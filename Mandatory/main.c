@@ -22,4 +22,5 @@ int main(int ac, char **av)
 		return (1);
 	if (!data_init(&vr))
 		return (1);
+		
 }

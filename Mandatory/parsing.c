@@ -30,12 +30,8 @@ int parsing(char **av, t_vars *vr)
 
 
 
-
-
-
-
-
-
     // printf ("%d\n",vr->n_philo);
     return (1);
 }
+
+
