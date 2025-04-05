@@ -16,7 +16,7 @@ void	free_all(t_collect **head)
 {
 	t_collect	*current;
 	t_collect	*next;
-
+	
 	if (!*head || !head)
 		return ;
 	current = *head;

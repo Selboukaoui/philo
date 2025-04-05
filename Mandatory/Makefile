@@ -1,10 +1,9 @@
-src = grb_collector.c  init.c  main.c  parsing.c  utils.c
+src = grb_collector.c  init.c  main.c  parsing.c  utils.c setflag.c
 
 # all: philo
 
 philo:
-	cc $(src) -o philo
+	cc -fsanitize=thread -g $(src) -o philo
 
 fclean:
-	rm *.o
 	rm philo
