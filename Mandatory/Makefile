@@ -1,4 +1,4 @@
-src = grb_collector.c  init.c  main.c  parsing.c  utils.c setflag.c
+src = grb_collector.c  init.c  main.c  parsing.c  utils.c routine.c
 
 # all: philo
 

@@ -6,19 +6,19 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 07:25:08 by selbouka          #+#    #+#             */
-/*   Updated: 2025/03/19 07:40:11 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:17:56 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	free_all(t_collect **head)
+void	*free_all(t_collect **head)
 {
 	t_collect	*current;
 	t_collect	*next;
 	
 	if (!*head || !head)
-		return ;
+		return (NULL);
 	current = *head;
 	while (current)
 	{
@@ -28,6 +28,7 @@ void	free_all(t_collect **head)
 		current = next;
 	}
 	*head = NULL;
+	return (NULL);
 }
 
 void	*ft_malloc(size_t size, int mode)

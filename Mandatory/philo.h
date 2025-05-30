@@ -20,11 +20,10 @@ typedef struct vars
 	pthread_mutex_t	write;
 	pthread_mutex_t	die;
 	pthread_mutex_t	meals;
-	
-	struct philo	*philo;
+
 	pthread_t	checker;
 
-	long	fork_id;
+	// long	fork_id;
 	long	start_t;
 	long n_philo;
 	long t_die;
@@ -34,8 +33,8 @@ typedef struct vars
 	long t_think;
 	long n_meals;
 
-	// start
-	// bool	end; 
+	struct philo	*philo;
+
 }   t_vars;
 
 
@@ -61,6 +60,8 @@ typedef struct garbage_c
 }	t_collect;
 
 
+
+
 int parsing(char **av, t_vars *vr);
 int ft_atoi(char *arg);
 
@@ -71,3 +72,5 @@ void	*ft_malloc(size_t size, int mode);
 
 long get_time(void);
 void    dead_flag(t_vars *var, int i);
+
+void    *routine(void *arg);

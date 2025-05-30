@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:18:05 by selbouka          #+#    #+#             */
-/*   Updated: 2025/03/19 03:38:45 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:27:50 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,11 @@ long get_time()
         
     }
     return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
+}
+
+void    dead_flag(t_vars *var, int i)
+{
+    pthread_mutex_lock(&var->die);
+    var->is_died = i;
+    pthread_mutex_unlock(&var->die);
 }

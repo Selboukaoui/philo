@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:48:02 by selbouka          #+#    #+#             */
-/*   Updated: 2025/03/19 07:08:35 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/05/27 18:48:36 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ int parsing(char **av, t_vars *vr)
     if (!(vr->t_sleep = ft_atoi(av[4])))
         return (0);
     if (av[5])
+    {
         if (!(vr->n_meals = ft_atoi(av[5])))
             return (0);
+    }
     else
         vr->n_meals = -99;
 
