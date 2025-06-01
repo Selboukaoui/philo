@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:18:05 by selbouka          #+#    #+#             */
-/*   Updated: 2025/05/27 18:27:50 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/01 20:09:21 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int ft_atoi(char *arg)
 }
 
 
-long get_time()
+long    get_time()
 {
     struct timeval	tv;
 
@@ -74,9 +74,30 @@ long get_time()
     return (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
 }
 
-void    dead_flag(t_vars *var, int i)
+int    dead_flag(t_vars *var, int i, int status)
 {
-    pthread_mutex_lock(&var->die);
-    var->is_died = i;
-    pthread_mutex_unlock(&var->die);
+    int tmp;
+
+    tmp = 0;
+    if (status == 0)
+    {
+        pthread_mutex_lock(&var->die);
+        var->is_died = i;
+        pthread_mutex_unlock(&var->die); 
+    }
+    else
+    {
+        pthread_mutex_lock(&var->die);
+        tmp = var->is_died;
+        pthread_mutex_unlock(&var->die); 
+    }
+    return (tmp);
+}
+
+void print(char *msg, t_vars *var)
+{
+    if (var->is_died != true)
+    {
+        printf ("%ld %s\n",var->philo->p_id ,msg);
+    }
 }

@@ -1,11 +1,3 @@
-// #include <pthread.h>
-// #include <stdio.h>
-// #include <unistd.h>
-// #include <limits.h>
-// # include <sys/time.h>
-// #include <sys/types.h>
-// #include <string.h>
-
 #include <stdlib.h>
 #include <stdbool.h>
 # include <stdio.h>
@@ -13,6 +5,10 @@
 # include <unistd.h>
 # include <sys/time.h>
 # include <limits.h>
+
+# define DIED	2
+# define FULL	3
+# define LIFE 0
 
 typedef struct vars
 {
@@ -71,6 +67,8 @@ int data_init(t_vars *var);
 void	*ft_malloc(size_t size, int mode);
 
 long get_time(void);
-void    dead_flag(t_vars *var, int i);
+int    dead_flag(t_vars *var, int i, int status);
 
 void    *routine(void *arg);
+
+void print(char *msg, t_vars *var);

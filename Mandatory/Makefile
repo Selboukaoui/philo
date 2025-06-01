@@ -7,3 +7,7 @@ philo:
 
 fclean:
 	rm philo
+
+re:
+	rm philo
+	make

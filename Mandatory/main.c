@@ -20,7 +20,6 @@ int main(int ac, char **av)
 		return (printf("Number of arguments is incorrect\n"), 0);
 	if (!parsing(av, &vr))
 		return (1);
-	// printf ("%d\n", vr.n_philo); 
 	if (!data_init(&vr))
 		return (1);
 		
