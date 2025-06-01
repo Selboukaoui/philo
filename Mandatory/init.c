@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 07:26:21 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/01 20:19:37 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/02 00:08:53 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,11 @@ void   *monitoring(void *arg)
             pthread_mutex_unlock(&var->meals);
             if (get_time() - time > var->t_die)
             {
+                print ("died", &var->philo[i]);
                 dead_flag(var, DIED, 0);
-                print ("died", var);
                 return (NULL);
             }
-            // printf ("\n\n\n\n|%ld, %ld|\n\n\n",get_time(), time);
-            i++;
+            i++;// is eating
         }
         usleep(500);
     }

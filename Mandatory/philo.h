@@ -17,17 +17,17 @@ typedef struct vars
 	pthread_mutex_t	die;
 	pthread_mutex_t	meals;
 
+
 	pthread_t	checker;
 
-	// long	fork_id;
-	long	start_t;
-	long n_philo;
-	long t_die;
-	long is_died;
-	long t_eat;
-	long t_sleep;
-	long t_think;
-	long n_meals;
+	long long	start_t;
+	long long n_philo;
+	long long t_die;
+	long long is_died;
+	long long t_eat;
+	long long t_sleep;
+	long long t_think;
+	long long n_meals;
 
 	struct philo	*philo;
 
@@ -71,4 +71,4 @@ int    dead_flag(t_vars *var, int i, int status);
 
 void    *routine(void *arg);
 
-void print(char *msg, t_vars *var);
+void print(char *msg, t_philo *philo);
