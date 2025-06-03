@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 07:26:21 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/02 00:08:53 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/03 20:04:55 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void    full_philo(t_vars *var)
         var->philo[i].l_f = i;
         var->philo[i].r_f = (i + 1) % var->n_philo;
         var->philo[i].var = var;
+        var->philo[i].is_eating = false;
         i++;
     }
 }
@@ -69,7 +70,6 @@ int check_meals(t_vars *var)
     while (i < var->n_philo)
     {
         meals_tmp = var->philo[i].meals_eat;
-        
         if (meals_tmp == var->n_meals)
             philo_full++;
         i++;
@@ -89,8 +89,8 @@ void   *monitoring(void *arg)
         pthread_mutex_lock(&var->meals);
         if (var->n_meals && check_meals(var))
         {
-            dead_flag(var, FULL, 0);
             pthread_mutex_unlock(&var->meals);
+            dead_flag(var, FULL, 0);
             return (NULL);
         }
         pthread_mutex_unlock(&var->meals);
@@ -98,6 +98,12 @@ void   *monitoring(void *arg)
         while (i < var->n_philo)
         {
             pthread_mutex_lock(&var->meals);
+            if (var->philo[i].is_eating == true)
+            {
+                pthread_mutex_unlock(&var->meals);
+                i++;
+                continue ;
+            }
             time = var->philo[i].last_meal_eat;
             pthread_mutex_unlock(&var->meals);
             if (get_time() - time > var->t_die)
@@ -106,9 +112,9 @@ void   *monitoring(void *arg)
                 dead_flag(var, DIED, 0);
                 return (NULL);
             }
-            i++;// is eating
+            i++;
         }
-        usleep(500);
+        usleep(1000);
     }
 }
 

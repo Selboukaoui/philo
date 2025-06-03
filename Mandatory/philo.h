@@ -29,6 +29,7 @@ typedef struct vars
 	long long t_think;
 	long long n_meals;
 
+
 	struct philo	*philo;
 
 }   t_vars;
@@ -41,6 +42,7 @@ typedef struct philo
 	int	l_f;
 	long	meals_eat;
 	bool	full;
+	bool	is_eating;
 	long	last_meal_eat;
 	pthread_t	t_id;
 
@@ -72,3 +74,5 @@ int    dead_flag(t_vars *var, int i, int status);
 void    *routine(void *arg);
 
 void print(char *msg, t_philo *philo);
+
+void    ft_sleep(t_vars *var, long long sleep);
