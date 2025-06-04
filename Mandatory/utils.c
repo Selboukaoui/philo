@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:18:05 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/03 20:09:33 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/04 13:40:44 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,12 +96,12 @@ int    dead_flag(t_vars *var, int i, int status)
 
 void print(char *msg, t_philo *philo)
 {
-    pthread_mutex_lock(&philo->var->write);
     if (dead_flag(philo->var, 0 , 69) != DIED)
     {
+        pthread_mutex_lock(&philo->var->write);
         printf ("%lld\t%ld\t%s\n",(long long)(get_time() - philo->var->start_t), philo->p_id ,msg);
+        pthread_mutex_unlock(&philo->var->write);
     }
-    pthread_mutex_unlock(&philo->var->write);
 }
 
 void    ft_sleep(t_vars *var, long long sleep)
@@ -109,6 +109,6 @@ void    ft_sleep(t_vars *var, long long sleep)
     long long   start;
 
     start = get_time();
-    while (dead_flag(var, 0, 8) != DIED && (get_time() - start) *1000 < sleep)
-        usleep (500);
+    while (dead_flag(var, 0, 8) != DIED && (get_time() - start) < sleep)
+        usleep (50);
 }

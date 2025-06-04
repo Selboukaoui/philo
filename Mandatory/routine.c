@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:10:39 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/03 20:02:51 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/04 14:16:09 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ void    eating(t_philo *philo)
     pthread_mutex_lock(&var->meals);
     philo->last_meal_eat = get_time();
     philo->meals_eat++;
-    philo->is_eating = true; //
+    philo->is_eating = true;
     pthread_mutex_unlock(&var->meals);
-    
-    ft_sleep(var, var->t_eat * 1000);
 
+    ft_sleep(var, var->t_eat);
+    
     pthread_mutex_lock(&var->meals);
     philo->is_eating = false;
     pthread_mutex_unlock(&var->meals);
@@ -111,12 +111,15 @@ void    routine_loop(t_philo *philo)
         put_fork(philo);
         print("is sleeping", philo);
         print("is thinking", philo);
-        ft_sleep(var, var->t_sleep * 1000);
+        ft_sleep(var, var->t_sleep);
         status = dead_flag(var, 0, 8);
         if (status != LIFE)
         {
-            if (status == DIED)
-                print("died", philo);
+            // if (status == DIED)
+            // {
+            //     usleep(500);
+            //     print("died", philo);
+            // }
             break ;
         }
     }
@@ -132,7 +135,7 @@ void    *routine(void *arg)
     if (var->n_philo == 1)
     {
         print("has taken a fork", philo);
-        ft_sleep(var, var->t_sleep * 1000);
+        ft_sleep(var, var->t_sleep);
         // print("is thinking", philo);
         print("died", philo);
         dead_flag(var, DIED, 0);

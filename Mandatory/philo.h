@@ -16,6 +16,7 @@ typedef struct vars
 	pthread_mutex_t	write;
 	pthread_mutex_t	die;
 	pthread_mutex_t	meals;
+	pthread_mutex_t	tst;
 
 
 	pthread_t	checker;
