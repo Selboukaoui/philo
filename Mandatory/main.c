@@ -12,28 +12,15 @@
 
 #include "philo.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-	t_vars  vr;
+	t_vars	var;
 
 	if (ac != 5 && ac != 6)
 		return (printf("Number of arguments is incorrect\n"), 0);
-	if (!parsing(av, &vr))
+	if (!parsing(av, &var))
 		return (1);
-	if (!data_init(&vr))
+	if (!data_init(&var))
 		return (1);
-
-
-
-
-
-
-	for (int i = 0; i < vr.n_philo; i++)
-        pthread_mutex_destroy(&vr.forks[i]);
-    pthread_mutex_destroy(&vr.write);
-    pthread_mutex_destroy(&vr.die);
-    pthread_mutex_destroy(&vr.meals);
-    free(vr.philo);
-    free(vr.forks);
-		
+	cleaning (&var, var.n_philo + 3, false);
 }

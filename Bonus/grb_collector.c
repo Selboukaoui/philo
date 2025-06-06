@@ -6,17 +6,17 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 07:25:08 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/06 18:36:34 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/04 16:22:21 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	*free_all(t_collect **head)
 {
 	t_collect	*current;
 	t_collect	*next;
-
+	
 	if (!*head || !head)
 		return (NULL);
 	current = *head;
@@ -43,10 +43,10 @@ void	*ft_malloc(size_t size, int mode)
 	{
 		data = malloc(size);
 		if (!data)
-			return (ft_malloc(0, 0));
+			return(ft_malloc(0, 0));
 		node = malloc(sizeof(t_collect));
 		if (!node)
-			return (free(data), ft_malloc(0, 0));
+			return(free(data), ft_malloc(0, 0));
 		node->data = data;
 		node->next = head;
 		head = node;
