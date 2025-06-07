@@ -6,106 +6,81 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:10:39 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/04 16:31:49 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/07 17:07:29 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "philo.h"
+#include "philo_bonus.h"
 
-// void    take_fork(t_philo *philo)
-// {
-//     t_vars *var;
+void	*death_monitor(void *arg)
+{
+	t_philo	*philo;
+	long long	time_since_meal;
 
-//     var = philo->var;
-//     if (dead_flag(var, 0, 10) == DIED)
-//         return ;
-//     if (philo->p_id % 2 == 0)
-//     {
-//         pthread_mutex_lock(&var->forks[philo->r_f]);
-//         print("has taken a fork", philo);
+	philo = (t_philo *)arg;
+	while (1)
+	{
+		time_since_meal = get_time() - philo->last_meal_eat;
+		if (time_since_meal > philo->var->t_die)
+		{
+			sem_wait(philo->var->write_sem);
+			printf("%lld %ld died\n", get_time() - philo->var->start_t, philo->p_id);
+			sem_post(philo->var->die_sem);
+			exit (1);
+		}
+		usleep(1000);
+	}
+	return (NULL);
+}
 
-//         pthread_mutex_lock(&var->forks[philo->l_f]);
-//         print("has taken a fork", philo); 
-//     }
-//     else
-//     {
-//         pthread_mutex_lock(&var->forks[philo->l_f]);
-//         print("has taken a fork", philo);
+void	take_forks(t_philo *philo)
+{
+	sem_wait(philo->var->forks_sem);
+	print("has taken a fork", philo);
+	sem_wait(philo->var->forks_sem);
+	print("has taken a fork", philo);
+}
 
-//         pthread_mutex_lock(&var->forks[philo->r_f]);        
-//         print("has taken a fork", philo); 
-//     }
-// }
+void	eat(t_philo *philo)
+{
+	print("is eating", philo);
+	philo->last_meal_eat = get_time();
+	ft_sleep(philo->var, philo->var->t_eat);
+	philo->meals_eat++;
+}
 
-// void    put_fork(t_philo *philo)
-// {
-//     t_vars  *var;
+void	put_forks(t_philo *philo)
+{
+	sem_post(philo->var->forks_sem);
+	sem_post(philo->var->forks_sem);
+}
 
-//     var = philo->var;
-//     pthread_mutex_unlock(&var->forks[philo->r_f]);
-//     pthread_mutex_unlock(&var->forks[philo->l_f]);
-// }
+void	*routine(void *arg)
+{
+	t_philo	*philo;
 
-// void    eating(t_philo *philo)
-// {
-//     t_vars  *var;
+	philo = (t_philo *)arg;
+	
+	if (pthread_create(&philo->death_monitor, NULL, death_monitor, philo) != 0)
+		return (NULL);
+	pthread_detach(philo->death_monitor);
+	
+	if (philo->p_id % 2 == 0)
+		usleep(10);
+		// ft_sleep(philo->var, 20);
 
-//     var = philo->var;
-//     pthread_mutex_lock(&var->meals);
-//     philo->last_meal_eat = get_time();
-//     philo->meals_eat++;
-//     philo->is_eating = true;
-//     pthread_mutex_unlock(&var->meals);
-
-//     ft_sleep(var, var->t_eat);
-
-//     pthread_mutex_lock(&var->meals);
-//     philo->is_eating = false;
-//     pthread_mutex_unlock(&var->meals);
-// }
-
-// void    routine_loop(t_philo *philo)
-// {
-//     t_vars  *var;
-//     int status;
-
-//     var = philo->var;
-//     while (dead_flag(var, 0, 7) == LIFE)
-//     {
-        
-//         print("is thinking", philo);
-//         take_fork(philo);
-//         print("is eating", philo);
-//         eating(philo);
-//         put_fork(philo);
-//         print("is sleeping", philo);
-//         ft_sleep(var, var->t_sleep);
-//         status = dead_flag(var, 0, 8);
-//         if (status != LIFE)
-//         {
-//             break ;
-//         }
-//     }
-// }
-
-// void    *routine(void *arg)
-// {
-//     t_philo *philo;
-//     t_vars  *var;
-    
-//     philo = (t_philo *)arg;
-//     var = philo->var;
-//     if (var->n_philo == 1)
-//     {
-//         print("is thinking", philo);
-//         print("has taken a fork", philo);
-//         ft_sleep(var, var->t_sleep);
-//         print("died", philo);
-//         dead_flag(var, DIED, 0);
-//         return (NULL);
-//     }
-//     if (philo->p_id % 2 == 0)
-//         ft_sleep(var, var->t_die / 2);
-//     routine_loop(philo);
-//     return (NULL);
-// }
+	while (1)
+	{
+		print("is thinking", philo);
+		take_forks(philo);
+		eat(philo);
+		put_forks(philo);
+		
+		if (philo->var->n_meals > 0 && philo->meals_eat >= philo->var->n_meals)
+			exit (1);
+			
+		print("is sleeping", philo);
+		ft_sleep(philo->var, philo->var->t_sleep);
+	}
+	return (NULL);
+}

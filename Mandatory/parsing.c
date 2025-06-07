@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:48:02 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/06 19:19:59 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/07 16:32:27 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	init_var(t_vars *vr, char **av)
 	vr->t_sleep = ft_atoi(av[4]);
 	if (!vr->t_sleep)
 		return (0);
+	return (1);
 }
 
 int	parsing(char **av, t_vars *vr)

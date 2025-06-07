@@ -1,18 +1,18 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -pthread -g
+CFLAGS = -Wall -Wextra -Werror  
+#-g -fsanitize=address -pthread
 
-NAME = philo_bonus
+NAME = philo
 
-SRCS = main.c parsing_bonus.c utils_bonus.c \
-       semaphores_utils.c init_bonus.c grb_collector.c \
-       routine_bonus.c 
+SRCS = grb_collector.c init/init_bonus.c init/init2_bonus.c   main_bonus.c      parsing_bonus.c    routine_bonus.c     utils/utils_bonus.c utils/utils2_bonus.c
 
 OBJS = $(SRCS:.c=.o)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
+all: $(NAME)
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 clean:

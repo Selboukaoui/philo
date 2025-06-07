@@ -1,24 +1,66 @@
-#ifndef PHILO_BONUS_H
-# define PHILO_BONUS_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/06 19:20:15 by selbouka          #+#    #+#             */
+/*   Updated: 2025/06/06 19:20:15 by selbouka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include <stdlib.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <sys/time.h>
-# include <sys/wait.h>
-# include <signal.h>
-# include <semaphore.h>
-# include <fcntl.h>
-# include <sys/stat.h>
-# include <limits.h>
-# include <pthread.h>
-# include <string.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <limits.h>
+#include <fcntl.h>
+#include <semaphore.h>
+#include <signal.h>
 
-# define DIED	1
-# define FULL	0
+#define DIED	2
+#define FULL	3
+#define LIFE	0
 
+typedef struct vars
+{
+	sem_t	*forks_sem;
+	sem_t	*write_sem;
+	sem_t	*die_sem;
+	sem_t	*meals_sem;
+	pthread_t		checker;
 
+	pid_t			*p_id;
+	int				*died;
+
+	long long		start_t;
+	long long		n_philo;
+	long long		t_die;
+	long long		is_died;
+	long long		t_eat;
+	long long		t_sleep;
+	long long		t_think;
+	long long		n_meals;
+
+	struct philo	*philo;
+
+}	t_vars;
+
+typedef struct philo
+{
+	long		p_id;
+
+	long		meals_eat;
+	bool		full;
+	bool		is_eating;
+	long		last_meal_eat;
+	pthread_t	death_monitor;
+
+	t_vars		*var;
+}	t_philo;
 
 typedef struct garbage_c
 {
@@ -26,50 +68,23 @@ typedef struct garbage_c
 	struct garbage_c	*next;
 }	t_collect;
 
-
-
-typedef struct s_philo
-{
-	int			id;
-	int			meals_eaten;
-	long long	last_meal_time;
-	long long	start_time;
-	int			n_philo;
-	long long	t_die;
-	long long	t_eat;
-	long long	t_sleep;
-	int			n_meals;
-	sem_t		*forks;
-	sem_t		*write_sem;
-	sem_t		*meal_sem;
-	pid_t		pid;
-}	t_philo;
-
-typedef struct s_data
-{
-	int			n_philo;
-	long long	t_die;
-	long long	t_eat;
-	long long	t_sleep;
-	int			n_meals;
-	long long	start_time;
-	pid_t		*pids;
-	t_philo		*philos;
-	sem_t		*forks;
-	sem_t		*write_sem;
-	sem_t		*meal_sem;
-}	t_data;
-
-// Function prototypes
-int		parsing(char **av, t_data *data);
+void	cleaning(t_vars *var);
+int		parsing(char **av, t_vars *vr);
 int		ft_atoi(char *arg);
-long	get_time(void);
-void	ft_sleep(long long time);
-int		init_semaphores(t_data *data);
-void	cleanup_semaphores(t_data *data);
-void	philosopher_routine(t_philo *philo);
-void	print_status(t_philo *philo, char *status);
-int		create_processes(t_data *data);
-void	*death_monitor(void *arg);
 
-#endif
+int		data_init(t_vars *var);
+
+void	*ft_malloc(size_t size, int mode);
+
+long	get_time(void);
+int		dead_flag(t_vars *var, int i, int status);
+
+void	*routine(void *arg);
+
+void	print(char *msg, t_philo *philo);
+
+void	ft_sleep(t_vars *var, long long sleep);
+void	*monitoring(void *arg);
+int		create_processes(t_vars *var);
+int		check_meals(t_vars *var);
+void	full_philo(t_vars *var);

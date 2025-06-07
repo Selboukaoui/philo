@@ -1,34 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:48:02 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/04 16:31:12 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/07 10:39:31 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int parsing(char **av, t_data *data)
+int	init_var(t_vars *vr, char **av)
 {
-    if (!(data->n_philo = ft_atoi(av[1])))
-        return(0);
-    if (!(data->t_die = ft_atoi(av[2])))
-        return (0);
-    if (!(data->t_eat = ft_atoi(av[3])))
-        return (0);
-    if (!(data->t_sleep = ft_atoi(av[4])))
-        return (0);
-    if (av[5])
-    {
-        if (!(data->n_meals = ft_atoi(av[5])))
-            return (0);
-    }
-    else
-        data->n_meals = -1;
+	vr->n_philo = ft_atoi(av[1]);
+	if (!vr->n_philo)
+		return (0);
+	vr->t_die = ft_atoi(av[2]);
+	if (!vr->t_die)
+		return (0);
+	vr->t_eat = ft_atoi(av[3]);
+	if (!vr->t_eat)
+		return (0);
+	vr->t_sleep = ft_atoi(av[4]);
+	if (!vr->t_sleep)
+		return (0);
+	return (1);
+}
 
-    return (1);
+int	parsing(char **av, t_vars *vr)
+{
+	if (!init_var(vr, av))
+		return (0);
+	if (vr->n_philo > 200 || vr->t_die < 60 || \
+		vr->t_eat < 60 || vr->t_sleep < 60)
+		return (printf("Error\nArgument not valid!"), 0);
+	if (av[5])
+	{
+		vr->n_meals = ft_atoi(av[5]);
+		if (!vr->n_meals)
+			return (0);
+	}
+	else
+		vr->n_meals = -99;
+	return (1);
 }
