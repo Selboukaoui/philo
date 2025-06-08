@@ -17,13 +17,8 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <limits.h>
-#include <fcntl.h>
 #include <semaphore.h>
 #include <signal.h>
-
-#define DIED	2
-#define FULL	3
-#define LIFE	0
 
 typedef struct vars
 {
@@ -33,9 +28,8 @@ typedef struct vars
 	sem_t			*meals_sem;
 	sem_t			*turn_sem;
 	sem_t			*full_sem;
-	pthread_t		checker;
 
-	bool		full;
+	bool			full;
 	pid_t			*pr_id;
 	int				*died;
 
@@ -54,7 +48,6 @@ typedef struct vars
 typedef struct philo
 {
 	long		p_id;
-
 	long		meals_eat;
 	bool		is_eating;
 	long		last_meal_eat;
@@ -72,18 +65,11 @@ typedef struct garbage_c
 void	cleaning(t_vars *var);
 int		parsing(char **av, t_vars *vr);
 int		ft_atoi(char *arg);
-
 int		data_init(t_vars *var);
-
 void	*ft_malloc(size_t size, int mode);
-
 long	get_time(void);
-int		dead_flag(t_vars *var, int i, int status);
-
 void	*routine(void *arg);
-
 void	print(char *msg, t_philo *philo);
-
 void	ft_sleep(t_vars *var, long long sleep);
 void	*monitoring(void *arg);
 int		create_processes(t_vars *var);

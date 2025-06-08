@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 19:10:11 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/08 15:44:26 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 23:35:25 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,14 @@ void	cleaning(t_vars *var)
 		sem_close(var->forks_sem);
 		sem_unlink("/forks_sem");
 	}
+	if (var->meals_sem != SEM_FAILED)
+	{
+		sem_close(var->meals_sem);
+		sem_unlink("/meals_sem");
+	}
 	if (var->turn_sem != SEM_FAILED)
-	{
-		sem_close(var->turn_sem);
-		sem_unlink("/turn_sem");
-	}
+		(sem_close(var->turn_sem), sem_unlink("/turn_sem"));
 	if (var->full_sem != SEM_FAILED)
-	{
 		(sem_close(var->full_sem), sem_unlink("/full_sem"));
-	}
 	ft_malloc(0, 0);
 }

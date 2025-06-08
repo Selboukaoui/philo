@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:10:39 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/08 22:58:33 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 23:36:19 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,10 @@ void	take_fork(t_philo *philo)
 	var = philo->var;
 	if (dead_flag(var, 0, 10) == DIED)
 		return ;
-	// if (philo->p_id % 2 == 0)
-	// {
-		pthread_mutex_lock(&var->forks[philo->r_f]);
-		print("has taken a fork", philo);
-		pthread_mutex_lock(&var->forks[philo->l_f]);
-		print("has taken a fork", philo);
-	// }
-	// else
-	// {
-	// 	pthread_mutex_lock(&var->forks[philo->l_f]);
-	// 	print("has taken a fork", philo);
-	// 	pthread_mutex_lock(&var->forks[philo->r_f]);
-	// 	print("has taken a fork", philo);
-	// }
+	pthread_mutex_lock(&var->forks[philo->r_f]);
+	print("has taken a fork", philo);
+	pthread_mutex_lock(&var->forks[philo->l_f]);
+	print("has taken a fork", philo);
 }
 
 void	put_fork(t_philo *philo)

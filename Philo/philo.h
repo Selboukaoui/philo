@@ -37,7 +37,6 @@ typedef struct vars
 	long long		is_died;
 	long long		t_eat;
 	long long		t_sleep;
-	// long long		t_think;
 	long long		n_meals;
 
 	struct philo	*philo;
@@ -50,7 +49,6 @@ typedef struct philo
 	int			r_f;
 	int			l_f;
 	long		meals_eat;
-	// bool		full;
 	bool		is_eating;
 	long		last_meal_eat;
 	pthread_t	t_id;
@@ -67,16 +65,11 @@ typedef struct garbage_c
 void	cleaning(t_vars *var, int j, int mutex);
 int		parsing(char **av, t_vars *vr);
 int		ft_atoi(char *arg);
-
 int		data_init(t_vars *var);
-
 void	*ft_malloc(size_t size, int mode);
-
 long	get_time(void);
 int		dead_flag(t_vars *var, int i, int status);
-
 void	*routine(void *arg);
-
 void	print(char *msg, t_philo *philo);
 void	cleanthd(t_vars *var, int i);
 void	ft_sleep(t_vars *var, long long sleep);

@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 21:10:39 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/08 23:17:44 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 23:28:59 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 void	*death_monitor(void *arg)
 {
 	t_philo		*philo;
-	long long	time_since_meal;
+	long long	time;
 
 	philo = (t_philo *)arg;
 	while (1)
 	{
-		time_since_meal = get_time() - philo->last_meal_eat;
-		if (time_since_meal > philo->var->t_die)
+		time = get_time() - philo->last_meal_eat;
+		if (time > philo->var->t_die)
 		{
 			sem_wait(philo->var->write_sem);
 			printf("%lld\t%ld\tdied\n", get_time() - \
