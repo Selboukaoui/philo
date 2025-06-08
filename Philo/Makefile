@@ -1,11 +1,10 @@
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror  
-#-g -fsanitize=address -pthread
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address -pthread
 
 NAME = philo
 
-SRCS = grb_collector.c init/init_bonus.c init/init2_bonus.c   main_bonus.c      parsing_bonus.c    routine_bonus.c     utils/utils_bonus.c utils/utils2_bonus.c
+SRCS = grb_collector.c init/init.c init/init2.c   main.c      parsing.c    routine.c     utils/utils.c utils/utils2.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:18:05 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/07 16:35:25 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 23:20:29 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,49 +72,13 @@ long	get_time(void)
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
-// int	dead_flag(t_vars *var, int i, int status)
-// {
-// 	int	tmp;
-
-// 	tmp = 0;
-// 	if (status == 0)
-// 	{
-// 		// sem_wait(var->death_event_sem);
-// 		var->is_died = i;
-// 		// sem_post(var->death_event_sem);
-// 	}
-// 	else
-// 	{
-// 		// sem_wait(var->death_event_sem);
-// 		tmp = var->is_died;
-// 		// sem_post(var->death_event_sem);
-// 	}
-// 	return (tmp);
-// }
-
-void print(char *msg, t_philo *philo)
+void	print(char *msg, t_philo *philo)
 {
-    sem_wait(philo->var->write_sem);
-    long current = get_time() - philo->var->start_t;
-    printf("%ld\t%ld\t%s\n", current, philo->p_id, msg);
-    sem_post(philo->var->write_sem);
+	sem_wait(philo->var->write_sem);
+	if (philo->var->full == false)
+	{
+		printf("%lld\t%ld\t%s\n", (get_time() - philo->var->start_t), \
+		philo->p_id, msg);
+	}
+	sem_post(philo->var->write_sem);
 }
-
-
-
-
-
-
-
-// void	print(char *msg, t_philo *philo)
-// {
-// 	// pthread_mutex_lock(&philo->var->write);
-// 	sem_wait(philo->var->write_sem);
-// 	// if (dead_flag(philo->var, 0, 69) != DIED)
-// 	// {
-// 		printf ("%lld\t%ld\t%s\n", (long long)(get_time() \
-// 		- philo->var->start_t), philo->p_id, msg);
-// 	// }
-// 	sem_post(philo->var->write_sem);
-// 	// pthread_mutex_unlock(&philo->var->write);
-// }

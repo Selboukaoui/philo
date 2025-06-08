@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   routine.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/05/27 21:10:39 by selbouka          #+#    #+#             */
+/*   Updated: 2025/06/08 22:58:33 by selbouka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	take_fork(t_philo *philo)
@@ -7,20 +19,20 @@ void	take_fork(t_philo *philo)
 	var = philo->var;
 	if (dead_flag(var, 0, 10) == DIED)
 		return ;
-	if (philo->p_id % 2 == 0)
-	{
+	// if (philo->p_id % 2 == 0)
+	// {
 		pthread_mutex_lock(&var->forks[philo->r_f]);
 		print("has taken a fork", philo);
 		pthread_mutex_lock(&var->forks[philo->l_f]);
 		print("has taken a fork", philo);
-	}
-	else
-	{
-		pthread_mutex_lock(&var->forks[philo->l_f]);
-		print("has taken a fork", philo);
-		pthread_mutex_lock(&var->forks[philo->r_f]);
-		print("has taken a fork", philo);
-	}
+	// }
+	// else
+	// {
+	// 	pthread_mutex_lock(&var->forks[philo->l_f]);
+	// 	print("has taken a fork", philo);
+	// 	pthread_mutex_lock(&var->forks[philo->r_f]);
+	// 	print("has taken a fork", philo);
+	// }
 }
 
 void	put_fork(t_philo *philo)
@@ -38,9 +50,9 @@ void	eating(t_philo *philo)
 
 	var = philo->var;
 	pthread_mutex_lock(&var->meals);
-	philo->last_meal_eat = get_time();
 	philo->meals_eat++;
 	philo->is_eating = true;
+	philo->last_meal_eat = get_time();
 	pthread_mutex_unlock(&var->meals);
 	ft_sleep(var, var->t_eat);
 	pthread_mutex_lock(&var->meals);
@@ -79,14 +91,15 @@ void	*routine(void *arg)
 	if (var->n_philo == 1)
 	{
 		print("is thinking", philo);
+		pthread_mutex_lock(&var->forks[philo->l_f]);
 		print("has taken a fork", philo);
-		ft_sleep(var, var->t_sleep);
-		// print("died", philo);`
+		pthread_mutex_unlock(&var->forks[philo->l_f]);
+		ft_sleep(var, var->t_die);
 		dead_flag(var, DIED, 0);
 		return (NULL);
 	}
 	if (philo->p_id % 2 == 0)
-		ft_sleep(var, 30);
+		ft_sleep(var, 25);
 	routine_loop(philo);
 	return (NULL);
 }

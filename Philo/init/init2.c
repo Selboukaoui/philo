@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:53:30 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/06 19:14:54 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 23:00:11 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,23 +33,26 @@ int	create_ph_threads(t_vars *var)
 
 	i = 0;
 	var->start_t = get_time();
+	if (var->start_t < 0)
+		return (write(2, "Error\nGet time failed\n", 23), \
+			cleaning(var, 0, 0), 0);
 	while (i < var->n_philo)
 	{
 		if (pthread_create(&var->philo[i].t_id, NULL, \
 			routine, &var->philo[i]) != 0)
 			return (printf ("Error\nThread Creation failed\n"), \
-				cleaning(var, i, false), 0);
+				cleanthd(var, --i), 0);
 		++i;
 	}
 	if (pthread_create(&var->checker, NULL, monitoring, var) != 0)
 		return (write(1, "Error\n Creat thread failed\n", \
-			28), cleaning(var, var->n_philo, false), 0);
+			28), cleanthd(var, i), 0);
 	if (join(var) == 0)
 		return (0);
 	if (pthread_join(var->checker, NULL))
 		return (printf ("Error\nThread joining failed\n"), \
 			cleaning(var, var->n_philo, false), 0);
-	return (0);
+	return (1);
 }
 
 int	monitor_while(t_vars *var)
@@ -84,16 +87,13 @@ void	*monitoring(void *arg)
 	t_vars	*var;
 
 	var = (t_vars *)arg;
-	while (66)
+	while (69)
 	{
-		pthread_mutex_lock(&var->meals);
 		if (var->n_meals && check_meals(var))
 		{
 			dead_flag(var, FULL, 0);
-			pthread_mutex_unlock(&var->meals);
 			return (NULL);
 		}
-		pthread_mutex_unlock(&var->meals);
 		if (!monitor_while(var))
 			return (NULL);
 		usleep (1000);

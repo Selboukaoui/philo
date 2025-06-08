@@ -17,6 +17,9 @@
 #include <unistd.h>
 #include <sys/time.h>
 #include <limits.h>
+#include <fcntl.h>
+#include <semaphore.h>
+#include <signal.h>
 
 #define DIED	2
 #define FULL	3
@@ -24,12 +27,17 @@
 
 typedef struct vars
 {
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	write;
-	pthread_mutex_t	die;
-	pthread_mutex_t	meals;
-
+	sem_t			*forks_sem;
+	sem_t			*write_sem;
+	sem_t			*die_sem;
+	sem_t			*meals_sem;
+	sem_t			*turn_sem;
+	sem_t			*full_sem;
 	pthread_t		checker;
+
+	bool		full;
+	pid_t			*pr_id;
+	int				*died;
 
 	long long		start_t;
 	long long		n_philo;
@@ -37,7 +45,6 @@ typedef struct vars
 	long long		is_died;
 	long long		t_eat;
 	long long		t_sleep;
-	long long		t_think;
 	long long		n_meals;
 
 	struct philo	*philo;
@@ -47,13 +54,11 @@ typedef struct vars
 typedef struct philo
 {
 	long		p_id;
-	int			r_f;
-	int			l_f;
+
 	long		meals_eat;
-	bool		full;
 	bool		is_eating;
 	long		last_meal_eat;
-	pthread_t	t_id;
+	pthread_t	death_monitor;
 
 	t_vars		*var;
 }	t_philo;
@@ -64,7 +69,7 @@ typedef struct garbage_c
 	struct garbage_c	*next;
 }	t_collect;
 
-void	cleaning(t_vars *var, int j, bool mutex);
+void	cleaning(t_vars *var);
 int		parsing(char **av, t_vars *vr);
 int		ft_atoi(char *arg);
 
@@ -81,5 +86,6 @@ void	print(char *msg, t_philo *philo);
 
 void	ft_sleep(t_vars *var, long long sleep);
 void	*monitoring(void *arg);
-int		create_ph_threads(t_vars *var);
+int		create_processes(t_vars *var);
 int		check_meals(t_vars *var);
+void	full_philo(t_vars *var);

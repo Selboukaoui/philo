@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 19:10:11 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/06 19:11:20 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 22:28:55 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ int	clean_mutex(t_vars *var, int j)
 	int	i;
 
 	i = 0;
-	if (j >= 1)
+	if (j > 1)
 		pthread_mutex_destroy(&var->write);
-	if (j >= 2)
+	if (j > 2)
 		pthread_mutex_destroy(&var->die);
-	if (j >= 3)
+	if (j > 3)
 		pthread_mutex_destroy(&var->meals);
 	j -= 3;
 	while (i < j)
@@ -43,31 +43,35 @@ int	clean_mutex(t_vars *var, int j)
 	return (0);
 }
 
-void	cleaning(t_vars *var, int j, bool mutex)
+void	cleaning(t_vars *var, int j, int mutex)
 {
-	int	i;
-
 	if (mutex)
 	{
-		if (j < 0)
-		{
-			clean_mutex(var, var->n_philo + 3);
-			ft_malloc(0, 0);
-			return ;
-		}
 		if (clean_mutex(var, j) == -666)
 		{
 			ft_malloc(0, 0);
 			return ;
 		}
 	}
-	else
+	else if (mutex == 0)
 		clean_mutex(var, var->n_philo + 3);
-	i = 0;
-	while (i < j && i < var->n_philo)
+	ft_malloc(0, 0);
+}
+
+void	cleanthd(t_vars *var, int i)
+{
+	dead_flag(var, DIED, 0);
+	while (i)
 	{
-		pthread_detach(var->philo[i].t_id);
-		i++;
+		if (pthread_join(var->philo[i].t_id, NULL) != 0)
+		{
+			printf ("Error\nThread joining failed\n");
+			cleaning(var, var->n_philo, false);
+			ft_malloc(0, 0);
+			return ;
+		}
+		--i;
 	}
+	cleaning(var, var->n_philo, false);
 	ft_malloc(0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 21:48:02 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/07 16:32:27 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:24:59 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,6 @@ int	parsing(char **av, t_vars *vr)
 			return (0);
 	}
 	else
-		vr->n_meals = -99;
+		vr->n_meals = 0;
 	return (1);
 }

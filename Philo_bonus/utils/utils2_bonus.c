@@ -6,7 +6,7 @@
 /*   By: selbouka <selbouka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 19:10:11 by selbouka          #+#    #+#             */
-/*   Updated: 2025/06/07 16:46:48 by selbouka         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:44:26 by selbouka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void	ft_sleep(t_vars *var, long long sleep)
 	start = get_time();
 	while ((get_time() - start) < sleep)
 		usleep (50);
-	// dead_flag(var, 0, 8) != DIED && 
 }
 
 void	cleaning(t_vars *var)
@@ -40,7 +39,14 @@ void	cleaning(t_vars *var)
 		sem_close(var->forks_sem);
 		sem_unlink("/forks_sem");
 	}
+	if (var->turn_sem != SEM_FAILED)
+	{
+		sem_close(var->turn_sem);
+		sem_unlink("/turn_sem");
+	}
+	if (var->full_sem != SEM_FAILED)
+	{
+		(sem_close(var->full_sem), sem_unlink("/full_sem"));
+	}
 	ft_malloc(0, 0);
 }
-
-
